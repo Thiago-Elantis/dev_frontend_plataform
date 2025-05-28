@@ -29,10 +29,10 @@ export interface FinancialSummary {
 export interface Client {
   id: number;
   name: string;
-  email: string;
-  phone: string;
-  company: string;
-  status: 'active' | 'inactive' | 'lead' | 'vip';
+  email?: string;
+  phone?: string;
+  company?: string;
+  status?: 'active' | 'inactive' | 'lead' | 'vip';
   tags: string[];
   lastContact: string;
   notes?: string;

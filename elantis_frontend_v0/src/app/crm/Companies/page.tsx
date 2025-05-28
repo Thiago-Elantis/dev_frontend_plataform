@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import SearchAndFilter from '@/components_crm/components_companies/SearchAndFilter';
 import CompanyTable from '@/components_crm/components_companies/CompanyTable';
 import CompanyModal from '@/components_crm/components_companies/CompanyModal';
@@ -89,11 +88,9 @@ export default function CompaniesPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
 
       <div className="flex-1 overflow-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Empresas</h1>
+        <div className="flex justify-end items-center mb-6">
           <button
             onClick={() => {
               setSelectedCompany(null);
@@ -105,6 +102,8 @@ export default function CompaniesPage() {
             Nova Empresa
           </button>
         </div>
+
+      
 
         <SearchAndFilter
           searchTerm={searchTerm}

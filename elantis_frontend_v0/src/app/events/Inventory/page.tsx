@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FiPlus, FiMap, FiBox, FiMic, FiDollarSign, FiFilter, FiSearch } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import InventoryHeader from '@/components_event/components_estoque/InventoryHeader';
 import InventoryTable from '@/components_event/components_estoque/InventoryTable';
 import InventoryModal from '@/components_event/components_estoque/InventoryModal';
@@ -152,7 +151,6 @@ export default function InventoryPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
       
       <div className="flex-1 overflow-auto p-6">
         <InventoryHeader 

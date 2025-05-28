@@ -9,7 +9,6 @@ import { startOfWeek } from 'date-fns/startOfWeek';
 import { getDay } from 'date-fns/getDay';
 import { ptBR } from 'date-fns/locale/pt-BR';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Sidebar from '@/components_dashboard/Sidebar';
 import EventModal from '@/components_event/components_calendar/EventModal';
 import CalendarHeader from '@/components_event/components_calendar/CalendarHeader';
 import { ActivityTypes, CalendarEvent } from '@/types/calendar';
@@ -173,7 +172,6 @@ export default function EventCalendarPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
 
       <div className="flex-1 overflow-auto p-6">
         <CalendarHeader title="Calendário de Atividades" onNewEvent={handleNewEventClick} />

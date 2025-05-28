@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import SearchAndFilter from '@/components_crm/components_companies/SearchAndFilter';
 import ClientTable from '@/components_crm/components_contacts/ContactsTable';
 import ClientModal from '@/components_crm/components_contacts/ContactsModal';
@@ -35,7 +34,7 @@ const initialClients: Client[] = [
     status: 'active',
     tags: ['evento1', 'expositor'],
     lastContact: '2023-05-15',
-    notes: 'Interessada em stand premium'
+    notes: 'Interessada em stand premium',
   },
   // ... outros clientes
 ];
@@ -50,11 +49,12 @@ export default function ClientsPage() {
   const [clients, setClients] = useState<Client[]>(initialClients);
 
   const filteredClients = clients.filter(client => {
-    const matchesSearch = 
-      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.phone.includes(searchTerm);
+    const matchesSearch =
+      (client.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (client.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (client.company || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (client.phone || '').includes(searchTerm);
+
 
     const matchesStatus = statusFilter === 'all' || client.status === statusFilter;
     const matchesTag = tagFilter === 'all' || client.tags.includes(tagFilter);
@@ -71,17 +71,20 @@ export default function ClientsPage() {
     setShowModal(true);
   };
 
-  const handleSaveClient = () => {
-    setShowModal(false);
-  };
+ 
+  const handleSaveClient = (updatedClient: Client) => {
+      setClients(prev =>
+        prev.some(c => c.id === updatedClient.id)
+          ? prev.map(c => (c.id === updatedClient.id ? updatedClient : c))
+          : [...prev, { ...updatedClient, id: Date.now() }] // adiciona novo se não existir id
+      );
+      setShowModal(false);
+    };
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-      
       <div className="flex-1 overflow-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Clientes</h1>
+        <div className="flex justify-end items-center mb-6">
           <button
             onClick={() => {
               setSelectedClient(null);

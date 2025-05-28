@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import Sidebar from "@/components_dashboard/Sidebar";
+import HeaderWithState from "@/components/HeaderWithState"; // novo componente
 
-// Fontes com variáveis CSS
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -26,7 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
-        {children}
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <div className="flex-1 bg-gray-50 pt-2 pr-2">
+            <HeaderWithState />
+            <div className="mt-6 ">{children}</div>
+          </div>
+        </div>
       </body>
     </html>
   );

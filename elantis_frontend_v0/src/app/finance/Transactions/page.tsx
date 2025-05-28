@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FiDollarSign, FiCreditCard, FiPieChart } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import { PageHeader } from '@/components_finance/components_transactions/PageHeader';
 import { FinancialSummary } from '@/components_finance/components_transactions/FinancialSummary';
 import { TransactionFilters } from '@/components_finance/components_transactions/TransactionFilters';
@@ -79,7 +78,6 @@ export default function TransactionsPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
       
       <div className="flex-1 overflow-auto p-6">
         <PageHeader 

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import Sidebar from '@/components_dashboard/Sidebar';
 import { CanvasElement } from '@/types/map-event';
 import EventMapToolbar from '@/components_map/EventMapToolbar';
 import EventCalendar from '@/components_map/EventCalendar';
@@ -39,7 +38,6 @@ export default function EventMapPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
       
       <div className="flex-1 overflow-auto p-6">
         <div className="flex justify-between items-center mb-6">

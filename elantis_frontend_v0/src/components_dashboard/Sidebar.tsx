@@ -183,7 +183,7 @@ export default function Sidebar() {
 
   if (!mounted) {
     return (
-      <aside className="w-64 bg-gradient-to-b from-blue-50 to-white shadow-lg p-5 h-screen sticky top-0 border-r border-gray-100">
+      <aside className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 shadow-lg p-5 h-screen sticky top-0 border-r border-gray-100">
         <div className="animate-pulse">
           <div className="h-10 bg-gray-200 rounded mb-4"></div>
           <div className="h-8 bg-gray-200 rounded mb-8"></div>
@@ -196,7 +196,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-blue-50 to-white shadow-lg p-5 h-screen sticky top-0 border-r border-gray-100 overflow-y-auto scrollbar-hide">
+    <aside className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 shadow-lg p-5 h-screen sticky top-0 border-r border-gray-100 overflow-y-auto scrollbar-hide">
 
       {/* Brand/Organization Section */}
       <div className="mb-8">
@@ -207,14 +207,14 @@ export default function Sidebar() {
             </svg>
           </div>
           <div>
-            <h2 className="font-bold text-xl text-gray-800">ByeWind</h2>
-            <p className="text-xs text-gray-500">Organização XXX</p>
+            <h2 className="font-bold text-xl text-white">ByeWind</h2>
+            <p className="text-xs text-white">Organização XXX</p>
           </div>
         </div>
         
         {/* Event Selector */}
         <div className="relative">
-          <label htmlFor="event-select" className="block text-xs font-medium text-gray-500 mb-1">
+          <label htmlFor="event-select" className="block text-xs font-medium text-white mb-1">
             EVENTO ATUAL (3/5)
           </label>
           <select 
@@ -226,7 +226,7 @@ export default function Sidebar() {
             <option>Promoção Verão</option>
             <option>Criar Eventos</option>
           </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 pt-5 text-gray-500">
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 pt-5 text-white">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
@@ -238,7 +238,7 @@ export default function Sidebar() {
       <nav className="space-y-7">
         {navSections.map((section, sectionIdx) => (
           <div key={section.title}>
-            <h3 className="font-semibold text-gray-500 uppercase text-xs tracking-wider mb-3 px-2">
+            <h3 className="font-semibold text-white uppercase text-xs tracking-wider mb-3 px-2">
               {section.title}
             </h3>
             <ul className="space-y-1">
@@ -251,7 +251,7 @@ export default function Sidebar() {
                       className={`flex items-center space-x-3 px-3 py-2.5 text-sm rounded-lg transition-all duration-200 ${
                         isActive 
                           ? 'bg-blue-600 text-white shadow-md'
-                          : 'text-gray-600 hover:bg-blue-100 hover:text-blue-600'
+                          : 'text-white hover:bg-blue-100 hover:text-blue-600'
                       }`}
                     >
                       <span className={`${isActive ? 'text-white' : 'text-blue-500'}`}>
@@ -280,10 +280,10 @@ export default function Sidebar() {
             JD
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-800 truncate">John Doe</p>
-            <p className="text-xs text-gray-500 truncate">admin@byewind.com</p>
+            <p className="text-sm font-medium text-white truncate">John Doe</p>
+            <p className="text-xs text-gray-300 truncate">admin@byewind.com</p>
           </div>
-          <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </div>

@@ -13,7 +13,6 @@ import {
   Filler
 } from 'chart.js';
 import { FiTrendingUp, FiTarget, FiDollarSign, FiUsers, FiCalendar } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 
 // Registrar componentes do ChartJS
 ChartJS.register(
@@ -146,8 +145,6 @@ export default function SalesProgressPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar />
       
       {/* Conteúdo Principal */}
       <div className="flex-1 overflow-auto">

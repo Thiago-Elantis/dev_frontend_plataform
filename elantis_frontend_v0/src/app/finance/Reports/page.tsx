@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { FiDownload, FiPieChart, FiBarChart2, FiTrendingUp, FiFilter } from 'react-icons/fi';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
-import Sidebar from '@/components_dashboard/Sidebar';
 import FinancialSummaryCard from '@/components_finance/components_report/FinancialSummaryCard';
 import ReportFilters from '@/components_finance/components_report/ReportFilters';
 import FinancialChart from '@/components_finance/components_report/FinancialChart';
@@ -151,7 +150,6 @@ export default function FinanceReportsPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
       
       <div className="flex-1 overflow-auto p-6">
         <div className="flex justify-between items-center mb-6">

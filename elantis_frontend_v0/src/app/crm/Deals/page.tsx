@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { FiPlus } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import PipelineStage from '@/components_crm/components_deals/PipelineStage';
 import AddDealModal from '@/components_crm/components_deals/AddDealModal';
 import type { Deal, DealsByStage, NewDealForm, PipelineStageTP } from '@/types';
@@ -56,8 +55,15 @@ export default function DealsPipelinePage() {
 
     const newDeals = { ...deals };
     newDeals[sourceStage] = newDeals[sourceStage].filter((_, idx) => idx !== source.index);
+
+    // Garante que o destino existe como array
+    if (!Array.isArray(newDeals[destStage])) {
+      newDeals[destStage] = [];
+    }
+
     newDeals[destStage] = [...newDeals[destStage]];
     newDeals[destStage].splice(destination.index, 0, movedDeal);
+
 
     setDeals(newDeals);
   };
@@ -99,19 +105,18 @@ export default function DealsPipelinePage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-      
       <div className="flex-1 overflow-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Pipeline de Deals</h1>
+        <div className="flex justify-end items-center mb-6">
           <button
             onClick={() => setShowAddDealModal(true)}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
           >
             <FiPlus className="mr-2" />
-            Novo Deal
+            Novo Deak
           </button>
         </div>
+
+      
 
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className="flex overflow-x-auto pb-4 gap-4">

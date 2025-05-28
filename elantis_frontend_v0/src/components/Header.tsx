@@ -1,19 +1,25 @@
 "use client";
 
-import { FiSearch, FiBell, FiPhone, FiSettings } from 'react-icons/fi';
-import Notifications from './Notifications';
+import { FiSearch, FiBell, FiPhone, FiSettings } from "react-icons/fi";
+import Notifications from "./Notifications";
 
 interface HeaderProps {
+  pageTitle: string;
   onNotificationsClick: () => void;
   showNotifications: boolean;
   onCloseNotifications: () => void;
 }
 
-export default function Header({ onNotificationsClick, showNotifications, onCloseNotifications }: HeaderProps) {
+export default function Header({
+  pageTitle,
+  onNotificationsClick,
+  showNotifications,
+  onCloseNotifications,
+}: HeaderProps) {
   return (
-    <header className="relative flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-bold text-gray-800">Overview</h1>
-      
+    <header className="relative flex justify-between items-center bg-gray-50">
+      <h1 className="text-2xl font-bold text-gray-800">{pageTitle}</h1>
+
       <div className="flex items-center space-x-4">
         <div className="relative">
           <input
@@ -27,21 +33,27 @@ export default function Header({ onNotificationsClick, showNotifications, onClos
         <nav aria-label="Utility navigation">
           <ul className="flex space-x-3">
             <li>
-              <button 
+              <button
                 onClick={onNotificationsClick}
-                aria-label="Notifications" 
+                aria-label="Notifications"
                 className="p-1 text-gray-600 hover:text-blue-600 transition-colors relative"
               >
                 <FiBell size={18} />
               </button>
             </li>
             <li>
-              <button aria-label="Contacts" className="p-1 text-gray-600 hover:text-blue-600 transition-colors">
+              <button
+                aria-label="Contacts"
+                className="p-1 text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 <FiPhone size={18} />
               </button>
             </li>
             <li>
-              <button aria-label="Settings" className="p-1 text-gray-600 hover:text-blue-600 transition-colors">
+              <button
+                aria-label="Settings"
+                className="p-1 text-gray-600 hover:text-blue-600 transition-colors"
+              >
                 <FiSettings size={18} />
               </button>
             </li>
@@ -49,7 +61,6 @@ export default function Header({ onNotificationsClick, showNotifications, onClos
         </nav>
       </div>
 
-      {/* Painel de Notificações */}
       {showNotifications && (
         <div className="absolute top-full right-0 z-50 mt-2">
           <Notifications isOpen={true} onClose={onCloseNotifications} />

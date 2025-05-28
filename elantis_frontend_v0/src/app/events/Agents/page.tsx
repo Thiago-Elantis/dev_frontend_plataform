@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FiPlus, FiUpload, FiDollarSign, FiFileText, FiClock } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import AgentHeader from '@/components_event/components_agents/AgentHeader';
 import AgentSummary from '@/components_event/components_agents/AgentSummary';
 import AgentFilters from '@/components_event/components_agents/AgentFilters';
@@ -105,8 +104,7 @@ export default function AgentsPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-      
+W      
       <div className="flex-1 overflow-auto p-6">
         <AgentHeader 
           title="Gestão de Fornecedores"

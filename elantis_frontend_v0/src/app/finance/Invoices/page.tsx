@@ -9,7 +9,6 @@ import {
   FiClock,
   FiCheck
 } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
 import InvoiceHeader from '@/components_finance/components_faturas/InvoiceHeader';
 import InvoiceSummary from '@/components_finance/components_faturas/InvoiceSummary';
 import InvoiceFilters from '@/components_finance/components_faturas/InvoiceFilters';
@@ -141,7 +140,6 @@ export default function InvoicesPage() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
 
       <div className="flex-1 overflow-auto p-6">
         <InvoiceHeader
