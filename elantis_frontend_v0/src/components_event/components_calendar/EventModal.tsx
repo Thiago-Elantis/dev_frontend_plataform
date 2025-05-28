@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { FiTrash2, FiX, FiCheck } from 'react-icons/fi';
-import { format } from 'date-fns';
 
 export interface CalendarEvent {
   id?: number;
@@ -28,7 +27,6 @@ interface EventModalProps {
   setNewEvent: React.Dispatch<React.SetStateAction<CalendarEvent>>;
   handleSaveEvent: () => void;
   handleDeleteEvent: () => void;
-  format: (date: Date, formatStr: string) => string; 
 }
 
 export default function EventModal({
@@ -41,35 +39,41 @@ export default function EventModal({
   handleSaveEvent,
   handleDeleteEvent,
 }: EventModalProps) {
+
   if (!showModal) return null;
 
-  // Manipula mudanças em inputs normais
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-
-    // Se for start ou end, converte string para Date
     if (name === 'start' || name === 'end') {
-      setNewEvent((prev) => ({
-        ...prev,
-        [name]: new Date(value),
-      }));
+      setNewEvent((prev) => ({ ...prev, [name]: new Date(value) }));
     } else {
-      setNewEvent((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setNewEvent((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">
+    // Drawer lateral fixo na direita
+    <div
+      className={`fixed top-16 right-0 h-full w-80 bg-white shadow-xl z-10 transform transition-transform duration-300 ${
+        showModal ? 'translate-x-0' : 'translate-x-full'
+      }`}
+    >
+      <div className="flex justify-between items-center p-4 border-b">
+        <h2 className="text-lg font-bold">
           {selectedEvent ? 'Editar Atividade' : 'Nova Atividade'}
         </h2>
+        <button
+          onClick={() => setShowModal(false)}
+          aria-label="Fechar"
+          className="text-gray-600 hover:text-gray-900"
+        >
+          <FiX size={24} />
+        </button>
+      </div>
 
+      <div className="p-4 overflow-auto h-[calc(100%-64px)]">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Título</label>
@@ -88,7 +92,7 @@ export default function EventModal({
               <input
                 type="datetime-local"
                 name="start"
-                value={format(newEvent.start, "yyyy-MM-dd'T'HH:mm")}
+                value={newEvent.start.toISOString().slice(0, 16)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 rounded-lg p-2"
               />
@@ -98,7 +102,7 @@ export default function EventModal({
               <input
                 type="datetime-local"
                 name="end"
-                value={format(newEvent.end, "yyyy-MM-dd'T'HH:mm")}
+                value={newEvent.end.toISOString().slice(0, 16)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 rounded-lg p-2"
               />
@@ -158,7 +162,6 @@ export default function EventModal({
             onClick={() => setShowModal(false)}
             className="flex items-center px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
           >
-            <FiX className="mr-2" />
             Cancelar
           </button>
           <button

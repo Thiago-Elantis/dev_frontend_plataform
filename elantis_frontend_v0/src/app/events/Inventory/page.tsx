@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { FiPlus, FiMap, FiBox, FiMic, FiDollarSign, FiFilter, FiSearch } from 'react-icons/fi';
-import InventoryHeader from '@/components_event/components_estoque/InventoryHeader';
-import InventoryTable from '@/components_event/components_estoque/InventoryTable';
-import InventoryModal from '@/components_event/components_estoque/InventoryModal';
-import MapViewer from '@/components_event/components_estoque/MapViewer';
+import InventoryHeader from '@/components_event/components_inventory/InventoryHeader';
+import InventoryTable from '@/components_event/components_inventory/InventoryTable';
+import InventoryModal from '@/components_event/components_inventory/InventoryModal';
+import MapViewer from '@/components_event/components_inventory/MapViewer';
 import { InventoryItem, InventoryFilterOption } from '@/types/inventory';
 
 const itemTypes: InventoryFilterOption[] = [

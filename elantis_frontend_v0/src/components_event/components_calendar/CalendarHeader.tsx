@@ -10,15 +10,18 @@ interface CalendarHeaderProps {
 
 export default function CalendarHeader({ title, onNewEvent }: CalendarHeaderProps) {
   return (
-    <div className="flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
-      <button
+    
+
+    <div className="flex-1 overflow-auto p-6">
+        <div className="flex justify-end items-center mb-6">
+          <button
         onClick={onNewEvent}
         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
       >
-        <FiPlus className="mr-2" />
-        Nova Atividade
-      </button>
+            <FiPlus className="mr-2" />
+            Nova Atividade
+          </button>
+        </div>
     </div>
   );
 }
