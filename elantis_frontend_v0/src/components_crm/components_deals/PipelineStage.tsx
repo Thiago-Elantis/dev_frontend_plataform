@@ -15,7 +15,7 @@ export default function PipelineStage({ stage, deals, formatCurrency }: Pipeline
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="flex-shrink-0 w-72 bg-gray-50 rounded-lg p-4"
+          className="flex-shrink-0 bg-gray-50 rounded-lg p-4"
         >
           <div className={`flex justify-between items-center mb-4 px-2 py-1 rounded-md ${stage.color}`}>
             <h3 className="font-medium">{stage.title}</h3>
