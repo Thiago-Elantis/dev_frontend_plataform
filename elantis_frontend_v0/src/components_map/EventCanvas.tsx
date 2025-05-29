@@ -142,6 +142,7 @@ export default function EventCanvas({
         height: 80,
         color: '#3B82F6',
         boothNumber: `E${elements.filter(e => e.type === 'booth').length + 1}`,
+        points: []
       };
       pushToHistory([...elements, newElement]);
       setSelectedElement(newElement);
@@ -157,6 +158,7 @@ export default function EventCanvas({
         title: 'Nova Palestra',
         capacity: 50,
         schedule: [],
+        points: []
       };
       pushToHistory([...elements, newElement]);
       setSelectedElement(newElement);
@@ -169,6 +171,7 @@ export default function EventCanvas({
         y,
         color: '#000000',
         text: 'Texto editável',
+        points: []
       };
       pushToHistory([...elements, newElement]);
       setSelectedElement(newElement);
@@ -184,6 +187,7 @@ export default function EventCanvas({
         height: 100,
         color: '#F59E0B',
         shape: 'rectangle',
+        points: []
       };
       pushToHistory([...elements, newElement]);
       setSelectedElement(newElement);
