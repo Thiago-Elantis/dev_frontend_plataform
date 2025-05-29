@@ -132,7 +132,7 @@ export default function EventMapPage() {
           mode={drawingMode}
           drawingLine={currentLine}
           setDrawingLine={setCurrentLine}
-          setShowLectureModal={val => setModals(prev => ({ ...prev, showLectureModal: val }))}
+          setShowLectureModal={(val: any) => setModals(prev => ({ ...prev, showLectureModal: val }))}
         />
 
         {renderModals()}

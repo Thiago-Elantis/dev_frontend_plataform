@@ -13,7 +13,7 @@ export type CanvasElement = {
   capacity?: number;
   schedule?: Array<{ start: Date; end: Date }>;
   text?: string;
-  points?: { x: number; y: number }[]; // For lines
+  points: { x: number; y: number }[]; // For lines
   shape?: 'rectangle' | 'circle'; // For shapes
 };
 
