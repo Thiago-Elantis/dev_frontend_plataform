@@ -25,3 +25,11 @@ code, pre {
   font-family: var(--font-mono), monospace;
 }
 
+.input-base {
+  @apply border border-gray-300 rounded-lg p-2 text-sm;
+}
+
+.btn-icon {
+  @apply px-3 py-2 text-white rounded-lg flex items-center justify-center;
+}
+

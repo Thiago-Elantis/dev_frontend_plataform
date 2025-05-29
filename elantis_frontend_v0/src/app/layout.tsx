@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components_dashboard/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import HeaderWithState from "@/components/HeaderWithState"; // novo componente
 
 const inter = Inter({

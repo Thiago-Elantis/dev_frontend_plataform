@@ -10,7 +10,7 @@ import {getDay} from 'date-fns/getDay';
 import {ptBR} from 'date-fns/locale/pt-BR';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { FiPlus } from 'react-icons/fi';
-import Sidebar from '@/components_dashboard/Sidebar';
+import Sidebar from '@/components/Sidebar';
 import EventModal from './EventModal';
 import CalendarHeader from './CalendarHeader';
 

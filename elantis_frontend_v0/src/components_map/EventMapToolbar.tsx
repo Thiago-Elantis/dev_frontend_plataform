@@ -1,10 +1,12 @@
-import { 
-  FiSquare, 
-  FiType, 
-  FiEdit2, 
-  FiMinus, 
-  FiImage, 
-  FiEdit 
+import {
+  FiSquare,
+  FiType,
+  FiEdit2,
+  FiMinus,
+  FiImage,
+  FiEdit,
+  FiCornerUpLeft,
+  FiCornerUpRight,
 } from 'react-icons/fi';
 import { CanvasElement, ModeType } from '@/types/map-event';
 
@@ -15,7 +17,10 @@ interface EventMapToolbarProps {
   elements: CanvasElement[];
   setElements: (elements: CanvasElement[]) => void;
   setSelectedElement: (element: CanvasElement | null) => void;
-  canvasRef: React.RefObject<HTMLDivElement | null>;
+  handleUndo: () => void;
+  handleRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 const colors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#000000'];
@@ -26,48 +31,73 @@ export default function EventMapToolbar({
   selectedElement,
   elements,
   setElements,
-  setSelectedElement
+  setSelectedElement,
+  handleUndo,
+  handleRedo,
+  canUndo,
+  canRedo,
 }: EventMapToolbarProps) {
   return (
     <div className="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-4 flex items-center space-x-2 select-none">
-      <ToolbarButton 
-        active={mode === 'select'} 
-        onClick={() => setMode('select')} 
+      {/* Ações de seleção/criação */}
+      <ToolbarButton
+        active={mode === 'select'}
+        onClick={() => setMode('select')}
         title="Selecionar"
         icon={<FiEdit2 />}
       />
-      <ToolbarButton 
-        active={mode === 'booth'} 
-        onClick={() => setMode('booth')} 
+      <ToolbarButton
+        active={mode === 'booth'}
+        onClick={() => setMode('booth')}
         title="Adicionar Estande"
         icon={<FiSquare />}
       />
-      <ToolbarButton 
-        active={mode === 'lecture'} 
-        onClick={() => setMode('lecture')} 
+      <ToolbarButton
+        active={mode === 'lecture'}
+        onClick={() => setMode('lecture')}
         title="Adicionar Área de Palestra"
         icon={<FiType />}
       />
-      <ToolbarButton 
-        active={mode === 'line'} 
-        onClick={() => setMode('line')} 
+      <ToolbarButton
+        active={mode === 'line'}
+        onClick={() => setMode('line')}
         title="Desenhar Linha"
         icon={<FiMinus />}
       />
-      <ToolbarButton 
-        active={mode === 'text'} 
-        onClick={() => setMode('text')} 
+      <ToolbarButton
+        active={mode === 'text'}
+        onClick={() => setMode('text')}
         title="Adicionar Texto"
         icon={<FiEdit />}
       />
-      <ToolbarButton 
-        active={mode === 'shape'} 
-        onClick={() => setMode('shape')} 
+      <ToolbarButton
+        active={mode === 'shape'}
+        onClick={() => setMode('shape')}
         title="Adicionar Forma"
         icon={<FiImage />}
       />
 
-      <ColorPicker 
+      {/* Separador visual */}
+      <div className="w-px h-6 bg-gray-200 mx-2" />
+
+      {/* Undo / Redo */}
+      <ToolbarButton
+        active={false}
+        onClick={handleUndo}
+        title="Desfazer"
+        icon={<FiCornerUpLeft />}
+        disabled={!canUndo}
+      />
+      <ToolbarButton
+        active={false}
+        onClick={handleRedo}
+        title="Refazer"
+        icon={<FiCornerUpRight />}
+        disabled={!canRedo}
+      />
+
+      {/* Cores */}
+      <ColorPicker
         selectedElement={selectedElement}
         elements={elements}
         setElements={setElements}
@@ -82,20 +112,22 @@ interface ToolbarButtonProps {
   onClick: () => void;
   title: string;
   icon: React.ReactNode;
+  disabled?: boolean;
 }
 
-function ToolbarButton({ active, onClick, title, icon }: ToolbarButtonProps) {
+function ToolbarButton({ active, onClick, title, icon, disabled }: ToolbarButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       title={title}
       aria-pressed={active}
+      disabled={disabled}
       className={`
-        p-2 rounded-lg 
-        transition-colors duration-200 
+        p-2 rounded-lg transition-colors duration-200
         focus:outline-none focus:ring-2 focus:ring-blue-400
         ${active ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 hover:bg-gray-200'}
+        ${disabled ? 'opacity-30 cursor-not-allowed' : ''}
       `}
     >
       {icon}
@@ -110,10 +142,14 @@ interface ColorPickerProps {
   setSelectedElement: (element: CanvasElement | null) => void;
 }
 
-function ColorPicker({ selectedElement, elements, setElements, setSelectedElement }: ColorPickerProps) {
+function ColorPicker({
+  selectedElement,
+  elements,
+  setElements,
+  setSelectedElement,
+}: ColorPickerProps) {
   const updateColor = (color: string) => {
     if (!selectedElement || selectedElement.color === color) return;
-
     const updated = { ...selectedElement, color };
     setSelectedElement(updated);
     setElements(elements.map(el => (el.id === selectedElement.id ? updated : el)));
@@ -130,7 +166,9 @@ function ColorPicker({ selectedElement, elements, setElements, setSelectedElemen
           className={`
             w-6 h-6 rounded-full mx-1 
             transition-shadow duration-200
-            ${selectedElement?.color === color ? 'ring-2 ring-offset-2 ring-gray-400' : 'hover:ring-1 hover:ring-gray-300'}
+            ${selectedElement?.color === color
+              ? 'ring-2 ring-offset-2 ring-gray-400'
+              : 'hover:ring-1 hover:ring-gray-300'}
           `}
           style={{ backgroundColor: color }}
         />

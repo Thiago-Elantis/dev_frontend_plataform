@@ -9,19 +9,34 @@ import { LectureModal } from '@/components_map/LectureModal';
 import { ElementContextMenu } from '@/components_map/ElementContextMenu';
 
 export default function EventMapPage() {
-  const [elements, setElements] = useState<CanvasElement[]>([]);
+  const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
   const [selectedElement, setSelectedElement] = useState<CanvasElement | null>(null);
-  const [showLectureModal, setShowLectureModal] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [modals, setModals] = useState({ showLectureModal: false, showCalendar: false });
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [mode, setMode] = useState<'select' | 'booth' | 'lecture' | 'line' | 'text' | 'shape'>('select');
-  const [drawingLine, setDrawingLine] = useState<{points: {x: number, y: number}[]} | null>(null);
+  const [drawingMode, setDrawingMode] = useState<'select' | 'booth' | 'lecture' | 'line' | 'text' | 'shape'>('select');
+  const [currentLine, setCurrentLine] = useState<{ points: { x: number, y: number }[] } | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  const convertToLecture = () => {
+  // Undo/redo history stacks
+  const [history, setHistory] = useState<CanvasElement[][]>([]);
+  const [redoStack, setRedoStack] = useState<CanvasElement[][]>([]);
+
+  // Wrap setCanvasElements to maintain history
+  const updateElementsWithHistory = (newElements: CanvasElement[]) => {
+    setHistory(prev => [...prev, canvasElements]);
+    setCanvasElements(newElements);
+    setRedoStack([]); // Clear redo on new action
+  };
+
+  const updateElement = (updated: CanvasElement) => {
+    updateElementsWithHistory(canvasElements.map(el => el.id === updated.id ? updated : el));
+    setSelectedElement(updated);
+  };
+
+  const handleConvertBoothToLecture = () => {
     if (!selectedElement) return;
-    
-    const updatedElement: CanvasElement = {
+
+    const updated: CanvasElement = {
       ...selectedElement,
       type: 'lecture',
       title: 'Nova Palestra',
@@ -31,74 +46,96 @@ export default function EventMapPage() {
       company: undefined,
     };
 
-    setSelectedElement(updatedElement);
-    setElements(elements.map(el => el.id === selectedElement.id ? updatedElement : el));
-    setShowLectureModal(true);
+    updateElement(updated);
+    setModals(prev => ({ ...prev, showLectureModal: true }));
+  };
+
+  const handleUndo = () => {
+    if (history.length === 0) return;
+    const previous = history[history.length - 1];
+    setRedoStack(prev => [canvasElements, ...prev]);
+    setCanvasElements(previous);
+    setHistory(prev => prev.slice(0, -1));
+    setSelectedElement(null);
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+    const next = redoStack[0];
+    setHistory(prev => [...prev, canvasElements]);
+    setCanvasElements(next);
+    setRedoStack(prev => prev.slice(1));
+    setSelectedElement(null);
+  };
+
+  const renderModals = () => {
+    if (modals.showLectureModal && selectedElement?.type === 'lecture') {
+      return (
+        <LectureModal
+          element={selectedElement}
+          selectedDate={selectedDate}
+          onClose={() => setModals(prev => ({ ...prev, showLectureModal: false }))}
+          onUpdate={updateElement}
+        />
+      );
+    }
+
+    if (selectedElement && !modals.showLectureModal) {
+      return (
+        <ElementContextMenu
+          element={selectedElement}
+          onUpdate={updateElement}
+          onDelete={() => {
+            updateElementsWithHistory(canvasElements.filter(el => el.id !== selectedElement.id));
+            setSelectedElement(null);
+          }}
+          onConvertToLecture={selectedElement.type === 'booth' ? handleConvertBoothToLecture : undefined}
+        />
+      );
+    }
+
+    return null;
   };
 
   return (
     <div className="flex h-screen bg-gray-50">
-      
       <div className="flex-1 overflow-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Mapa do Evento</h1>
           <EventCalendar 
-            showCalendar={showCalendar} 
-            setShowCalendar={setShowCalendar}
+            showCalendar={modals.showCalendar} 
+            setShowCalendar={val => setModals(prev => ({ ...prev, showCalendar: val }))}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
           />
         </div>
 
-        <EventMapToolbar 
-          mode={mode}
-          setMode={setMode}
+        <EventMapToolbar
+          mode={drawingMode}
+          setMode={setDrawingMode}
           selectedElement={selectedElement}
-          elements={elements}
-          setElements={setElements}
+          elements={canvasElements}
+          setElements={updateElementsWithHistory}
           setSelectedElement={setSelectedElement}
-          canvasRef={canvasRef} // <--- importante!
-
+          handleUndo={handleUndo}
+          handleRedo={handleRedo}
+          canUndo={history.length > 0}
+          canRedo={redoStack.length > 0}
         />
 
         <EventCanvas
           canvasRef={canvasRef}
-          elements={elements}
-          setElements={setElements}
+          elements={canvasElements}
+          setElements={updateElementsWithHistory}
           selectedElement={selectedElement}
           setSelectedElement={setSelectedElement}
-          mode={mode}
-          drawingLine={drawingLine}
-          setDrawingLine={setDrawingLine}
-          setShowLectureModal={setShowLectureModal}
+          mode={drawingMode}
+          drawingLine={currentLine}
+          setDrawingLine={setCurrentLine}
+          setShowLectureModal={val => setModals(prev => ({ ...prev, showLectureModal: val }))}
         />
 
-        {showLectureModal && selectedElement?.type === 'lecture' && (
-          <LectureModal
-            element={selectedElement}
-            selectedDate={selectedDate}
-            onClose={() => setShowLectureModal(false)}
-            onUpdate={(updated) => {
-              setSelectedElement(updated);
-              setElements(elements.map(el => el.id === selectedElement.id ? updated : el));
-            }}
-          />
-        )}
-
-        {selectedElement && !showLectureModal && (
-          <ElementContextMenu
-            element={selectedElement}
-            onUpdate={(updated) => {
-              setSelectedElement(updated);
-              setElements(elements.map(el => el.id === selectedElement.id ? updated : el));
-            }}
-            onDelete={() => {
-              setElements(elements.filter(el => el.id !== selectedElement.id));
-              setSelectedElement(null);
-            }}
-            onConvertToLecture={selectedElement.type === 'booth' ? convertToLecture : undefined}
-          />
-        )}
+        {renderModals()}
       </div>
     </div>
   );
