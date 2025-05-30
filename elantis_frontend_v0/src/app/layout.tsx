@@ -1,8 +1,11 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
-import HeaderWithState from "@/components/HeaderWithState"; // novo componente
+import HeaderWithState from "@/components/HeaderWithState";
+import { useState } from "react";
+import clsx from "clsx";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,24 +17,30 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-export const metadata: Metadata = {
-  title: "Elantis",
-  description: "Tecnologia com propósito.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <div className="flex-1 bg-gray-50 pt-2 pr-2 md-4">
-            <HeaderWithState />
-            <div className="mt-6 ">{children}</div>
+        <div className="flex min-h-screen bg-gray-50">
+          <Sidebar 
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
+          />
+          
+          <div className={clsx(
+            "flex-1 transition-all duration-300 ease-in-out",
+            isSidebarOpen ? "ml-5" : "ml-3 mr-3"
+          )}>
+            <div className="pt-2 pr-2 md-4">
+              <HeaderWithState isSidebarOpen={isSidebarOpen} />
+              <div className="mt-6 pl-4">{children}</div>
+            </div>
           </div>
         </div>
       </body>
