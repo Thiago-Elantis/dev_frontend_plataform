@@ -222,7 +222,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         )}
 
         {/* Navigation Sections */}
-        <nav className="flex-1 flex flex-col space-y-6">
+        <nav className="flex-1 flex flex-col space-y-6 items-center">
           {navSections.map((section) => (
             <div key={section.title} className="space-y-1">
               <button
