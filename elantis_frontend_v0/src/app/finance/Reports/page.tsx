@@ -24,6 +24,7 @@ import FinancialSummaryCard from '@/components_finance/components_report/Financi
 import ReportFilters from '@/components_finance/components_report/ReportFilters';
 import FinancialChart from '@/components_finance/components_report/FinancialChart';
 import GrowthList from '@/components_finance/components_report/GrowthList';
+import RevenueSection from '@/components_finance/components_report/RevenueSection';
 import {
   ReportType,
   PeriodOption,

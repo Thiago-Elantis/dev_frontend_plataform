@@ -73,7 +73,7 @@ function Header({
   return (
     <header 
       className={clsx(
-        "fixed top-0 left-0 right-0 bg-slate-100 shadow-md flex justify-between items-center px-4 py-3 z-50 h-16 transition-all duration-300 ease-in-out",
+        "fixed top-0 rounded-b-lg left-0 right-0 bg-slate-100 shadow-md flex justify-between items-center px-4 py-3 z-50 h-16 transition-all duration-300 ease-in-out",
         isSidebarOpen ? "ml-64" : "ml-20"
       )}
     >

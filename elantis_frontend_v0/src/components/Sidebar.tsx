@@ -64,9 +64,9 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     title: 'CRM',
     icon: FileText,
     items: [
-      { name: 'Contatos', path: 'crm/Contacts', icon: Users },
-      { name: 'Empresas', path: 'crm/Companies', icon: Building },
-      { name: 'Negócios', path: 'crm/Deals', icon: Handshake },
+      { name: 'Contatos', path: '/crm/Contacts', icon: Users },
+      { name: 'Empresas', path: '/crm/Companies', icon: Building },
+      { name: 'Negócios', path: '/crm/Deals', icon: Handshake },
     ],
   },
   {
@@ -75,8 +75,9 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     items: [
       { name: 'Fornecedores', path: '/events/Agents', icon: Truck },
       { name: 'Calendário', path: '/events/Calendar', icon: Calendar },
-      { name: 'Estoque', path: '/events/Inventory', icon: FileText },
+      { name: 'Estoque', path: '/events/Inventory', icon: Package },
       { name: 'Ingressos', path: '/events/Tickets', icon: Ticket },
+      { name: 'Contratos de Fornecedores', path: '/events/Agents_Contracts', icon: FileText },
     ],
   },
   {
@@ -222,7 +223,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         )}
 
         {/* Navigation Sections */}
-        <nav className="flex-1 flex flex-col space-y-6 items-center">
+        <nav className={clsx("flex-1 flex flex-col space-y-6", isOpen ?"items-left":"items-center")}>
           {navSections.map((section) => (
             <div key={section.title} className="space-y-1">
               <button

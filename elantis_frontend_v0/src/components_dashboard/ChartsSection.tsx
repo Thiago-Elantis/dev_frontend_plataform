@@ -1,3 +1,4 @@
+//ChartsSection.tsx
 "use client";
 
 import {
@@ -35,7 +36,7 @@ export default function ChartsSection() {
       {/* Gráfico de Performance */}
       <div className="md:col-span-2 bg-white p-6 rounded-2xl shadow-md">
         <h4 className="text-lg font-semibold text-gray-800 mb-4">
-          Novos Contatos / Negócios / Faturamento
+          Novos Contatos / Negócios / Ganhos
         </h4>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">

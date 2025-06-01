@@ -39,6 +39,7 @@ export default function RootLayout({
           )}>
             <div className="pt-2 pr-2 md-4">
               <HeaderWithState isSidebarOpen={isSidebarOpen} />
+              <div className="h-4"></div>
               <div className="mt-6 pl-4">{children}</div>
             </div>
           </div>
