@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { CATEGORIAS, ETAPAS, TIME_RANGES} from "../constants/FilterConstants";
+import { CATEGORIES_SALES_ITEMS, ETAPAS, TIME_RANGES} from "../constants/FilterConstants";
 
 export type ResumoProps = {
   label: string;
@@ -46,7 +46,7 @@ export interface CardProps {
 
 
 
-export type Categoria = typeof CATEGORIAS[number];
+export type Categoria = typeof CATEGORIES_SALES_ITEMS[number];
 
 export type Etapa = typeof ETAPAS[number];
 

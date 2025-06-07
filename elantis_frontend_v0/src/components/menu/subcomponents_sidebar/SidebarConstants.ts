@@ -26,22 +26,23 @@ export const events = [
 
 export const navSections: NavSection[] = [
   {
-    title: 'Dashboards',
+    title: 'Overview',
     icon: LayoutDashboard,
     items: [
-      { name: 'Overview', path: '/dashboard', icon: LayoutDashboard },
-      { name: 'Sales Progress', path: '/sales_Progress', icon: TrendingUp },
+      { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
       { name: 'Event Map', path: '/event-map', icon: Map },
     ],
   },
   {
-    title: 'CRM',
-    icon: FileText,
-    items: [
-      { name: 'Contatos', path: '/crm/contacts', icon: Users },
-      { name: 'Empresas', path: '/crm/companies', icon: Building },
-      { name: 'Negócios', path: '/crm/deals', icon: Handshake },
-    ],
+  title: 'CRM',
+  icon: FileText,
+  items: [
+    { name: 'Contatos', path: '/crm/contacts', icon: Users },
+    { name: 'Empresas', path: '/crm/companies', icon: Building },
+    { name: 'Negócios', path: '/crm/deals', icon: Handshake },
+    { name: 'Tarefas', path: '/crm/tasks', icon: FileText },
+    { name: 'Listas', path: '/crm/lists', icon: FileText },
+  ],
   },
   {
     title: 'Eventos',
@@ -63,11 +64,5 @@ export const navSections: NavSection[] = [
       { name: 'Relatório Financeiro', path: '/finance/reports', icon: LayoutDashboard },
     ],
   },
-  {
-    title: 'Outros',
-    icon: Package,
-    items: [
-      { name: 'Settings', path: '/settings', icon: Package },
-    ],
-  },
+  
 ];
