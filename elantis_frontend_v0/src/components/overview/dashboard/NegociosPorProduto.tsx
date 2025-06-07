@@ -121,6 +121,7 @@ export default function NegociosPorProduto() {
               Últimos {dias} dias
             </button>
           ))}
+          
         </div>
       </div>
 
@@ -154,7 +155,7 @@ export default function NegociosPorProduto() {
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 text-center">
+      <div className="grid grid-cols-3 gap-3 text-center">
         {sortedData.map((item, i) => {
           const percentage = ((item.value / totalValue) * 100).toFixed(1);
           return (

@@ -210,6 +210,7 @@ export default function FinanceReportsPage() {
           </div>
         </div>
 
+        <RevenueSection />
         <ReportFilters
           showFilters={showFilters}
           setShowFilters={setShowFilters}

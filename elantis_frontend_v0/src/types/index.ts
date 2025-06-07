@@ -10,9 +10,9 @@ export interface Company {
   phone?: string;
   industry?: string;
   status: string;
-  address?: string;   // <--- Torne opcional
-  website?: string;   // <--- Torne opcional
-  contacts?: number;  // <--- Torne opcional
+  address?: string;   // opcional
+  website?: string;   // opcional
+  contacts?: number;  // opcional
   notes?: string;
 }
 
@@ -23,9 +23,7 @@ export interface FinancialSummary {
   color: string;
 }
 
-
-
-// Adicione ao arquivo existente
+// Adicionado
 export interface Client {
   id: number;
   name: string;
@@ -38,7 +36,7 @@ export interface Client {
   notes?: string;
 }
 
-// Adicione ao arquivo existente
+// Adicionado
 export type PipelineStageTP = {
   id: string;
   title: string;
@@ -66,8 +64,7 @@ export interface NewDealForm {
   stage: string;
 }
 
-
-// Adicione ao arquivo existente
+// Adicionado
 export interface ReportType {
   value: string;
   label: string;
@@ -92,15 +89,12 @@ export interface ChartData {
   }[];
 }
 
-
-
 export interface GrowthItem {
   year: string;
   value: string;
 }
 
-
-// Adicione ao arquivo existente
+// Adicionado
 export interface Transaction {
   id: number;
   description: string;
@@ -124,4 +118,11 @@ export interface FinancialSummaryCard {
   change: string;
   icon: React.ReactNode;
   color: string;
+}
+
+export type SortDirection = 'asc' | 'desc';
+
+export interface SortBy<T> {
+  key: keyof T;
+  direction: SortDirection;
 }

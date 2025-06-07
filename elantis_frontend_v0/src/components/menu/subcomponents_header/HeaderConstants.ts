@@ -1,0 +1,19 @@
+// src/components/Header/constants.ts
+export const pageTitles: Record<string, string> = {
+  "/dashboard": "Dashboard",
+  "/sales_progress": "Progresso de Vendas",
+  "/event-map": "Mapa do Evento",
+  "/crm/contacts": "Contatos",
+  "/crm/companies": "Empresas",
+  "/crm/deals": "Pipeline de Deals",
+  "/crm/contracts": "Contratos Clientes",
+  "/events/calendar": "Calendário de Atividades",
+  "/events/inventory": "Estoque do Evento",
+  "/events/tickets": "Ingressos",
+  "/events/sponsors": "Patrocinadores",
+  "/events/agents": "Gestão de Fornecedores",
+  "/events/contracts": "Contratos Fornecedores",
+  "/finance/transactions": "Transações Financeiras",
+  "/finance/reports": "Relatórios Financeiros",
+  "/finance/invoices": "Gestão de Faturas",
+};

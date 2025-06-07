@@ -1,3 +1,4 @@
+import { SortDirection } from '@/types';
 import { FiBriefcase, FiPhone, FiMail, FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 interface Company {
@@ -17,14 +18,17 @@ interface CompanyTableProps {
   companies: Company[];
   getIndustryLabel: (value: string | null | undefined) => string;
   handleEditCompany: (company: Company) => void;
-  handleDeleteCompany: (id: number) => void;
+  handleRequestDelete: (company: Company) => void;  // <- adicione esta linha
+  sortBy: keyof Company;
+  sortDirection: SortDirection;
+  onSortChange: (columnKey: keyof Company) => void;
 }
 
 export default function CompanyTable({
   companies,
   getIndustryLabel,
   handleEditCompany,
-  handleDeleteCompany,
+  handleRequestDelete,
 }: CompanyTableProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -136,7 +140,7 @@ export default function CompanyTable({
                     <FiEdit2 />
                   </button>
                   <button
-                    onClick={() => handleDeleteCompany(company.id)}
+                    onClick={() => handleRequestDelete(company)}
                     className="text-red-600 hover:text-red-900"
                     aria-label={`Excluir ${company.name}`}
                   >

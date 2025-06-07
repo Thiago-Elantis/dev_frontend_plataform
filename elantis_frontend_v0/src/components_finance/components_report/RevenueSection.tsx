@@ -11,9 +11,10 @@ import {
   PointElement,
   LineElement
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import { FiInfo, FiTrendingUp, FiClock, FiDollarSign, FiUser } from 'react-icons/fi';
-import { useState } from 'react';
+import { useState, ChangeEvent, JSX } from 'react';
+import type { ChartOptions, Tick, TooltipItem } from 'chart.js';
 
 ChartJS.register(
   CategoryScale,
@@ -29,9 +30,9 @@ ChartJS.register(
 export default function RevenueSection() {
   const [selectedRange, setSelectedRange] = useState('30');
 
-  const handleRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRangeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedRange(e.target.value);
-    // Aqui você poderia atualizar os dados com base no filtro
+    // Atualização de dados baseada no filtro
   };
 
   const funnelData = {
@@ -84,12 +85,12 @@ export default function RevenueSection() {
     ]
   };
 
-  const funnelOptions = {
+  const funnelOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           padding: 20,
           usePointStyle: true,
@@ -101,9 +102,9 @@ export default function RevenueSection() {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         callbacks: {
-          label: (context: any) => {
+          label: (context: TooltipItem<'bar'>) => {
             const label = context.dataset.label || '';
-            const value = context.raw || 0;
+            const value = context.raw as number || 0;
             return label === 'Quantidade'
               ? `${label}: ${value.toLocaleString('pt-BR')}`
               : `${label}: R$ ${value.toLocaleString('pt-BR')}`;
@@ -114,23 +115,33 @@ export default function RevenueSection() {
     scales: {
       y: {
         beginAtZero: true,
-        grid: { drawBorder: false, color: 'rgba(0,0,0,0.05)' },
+        grid: { 
+          color: 'rgba(0,0,0,0.05)',
+        },
+        // Correção: border no nível superior
+        border: {
+          display: false
+        },
         ticks: { padding: 8 }
       },
       x: {
         grid: { display: false },
+        // Correção: border no nível superior
+        border: {
+          display: false
+        },
         ticks: { padding: 12 }
       }
     }
   };
 
-  const timelineOptions = {
+  const timelineOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
-    interaction: { mode: 'index' as const, intersect: false },
+    interaction: { mode: 'index', intersect: false },
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           padding: 20,
           usePointStyle: true,
@@ -142,9 +153,9 @@ export default function RevenueSection() {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         callbacks: {
-          label: (context: any) => {
+          label: (context: TooltipItem<'line'>) => {
             const label = context.dataset.label || '';
-            const value = context.raw || 0;
+            const value = context.raw as number || 0;
             return label === 'Tempo Médio (dias)'
               ? `${label}: ${value} dias`
               : `${label}: R$ ${value.toLocaleString('pt-BR')}`;
@@ -154,32 +165,57 @@ export default function RevenueSection() {
     },
     scales: {
       y: {
-        display: true,
         position: 'left',
-        title: { display: true, text: 'Dias no Funil' },
-        grid: { drawBorder: false, color: 'rgba(0,0,0,0.05)' }
+        display: true,
+        title: { 
+          display: true, 
+          text: 'Dias no Funil' 
+        },
+        grid: { 
+          color: 'rgba(0,0,0,0.05)',
+        },
+        // Correção: border no nível superior
+        border: {
+          display: false
+        }
       },
       y1: {
-        display: true,
         position: 'right',
-        title: { display: true, text: 'Valor (R$)' },
-        grid: { drawOnChartArea: false },
+        display: true,
+        title: { 
+          display: true, 
+          text: 'Valor (R$)' 
+        },
+        grid: { 
+          drawOnChartArea: false 
+        },
+        // Correção: border no nível superior
+        border: {
+          display: false
+        },
         ticks: {
-          callback: (value: any) => `R$ ${(value / 1000).toFixed(0)}K`
+          callback: function(this, value: string | number, index: number, ticks: Tick[]) {
+            const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+            return `R$ ${(numericValue / 1000).toFixed(0)}K`;
+          }
         }
       },
       x: {
-        grid: { display: false }
+        grid: { display: false },
+        // Correção: border no nível superior
+        border: {
+          display: false
+        }
       }
     }
   };
 
-  const totalLeads = funnelData.datasets[0].data[0];
-  const closedDeals = funnelData.datasets[0].data[4];
+  const totalLeads = funnelData.datasets[0].data[0] as number;
+  const closedDeals = funnelData.datasets[0].data[4] as number;
   const conversionRate = ((closedDeals / totalLeads) * 100).toFixed(1);
-  const totalValue = funnelData.datasets[1].data[4];
+  const totalValue = funnelData.datasets[1].data[4] as number;
   const avgDealSize = totalValue / closedDeals;
-  const avgFunnelTime = timelineData.datasets[0].data.reduce((a, b) => a + b, 0) / 12;
+  const avgFunnelTime = (timelineData.datasets[0].data as number[]).reduce((a, b) => a + b, 0) / 12;
 
   return (
     <div className="space-y-6">
@@ -236,7 +272,7 @@ export default function RevenueSection() {
           }
         >
           <div role="figure" aria-label="Gráfico de Desempenho Temporal" className="relative min-h-[18rem]">
-            <Bar data={timelineData} options={timelineOptions} />
+            <Line data={timelineData} options={timelineOptions} />
           </div>
         </ChartCard>
       </div>
@@ -247,8 +283,8 @@ export default function RevenueSection() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {funnelData.labels.map((label, index) => {
             if (index === funnelData.labels.length - 1) return null;
-            const current = funnelData.datasets[0].data[index];
-            const next = funnelData.datasets[0].data[index + 1];
+            const current = funnelData.datasets[0].data[index] as number;
+            const next = funnelData.datasets[0].data[index + 1] as number;
             const rate = ((next / current) * 100).toFixed(1);
 
             return (
@@ -272,7 +308,14 @@ export default function RevenueSection() {
 
 // Componentes auxiliares
 
-function MetricCard({ label, value, icon, trend }: any) {
+interface MetricCardProps {
+  label: string;
+  value: string;
+  icon: JSX.Element;
+  trend: string;
+}
+
+function MetricCard({ label, value, icon, trend }: MetricCardProps) {
   return (
     <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
       <div className="flex items-center justify-between">
@@ -287,7 +330,15 @@ function MetricCard({ label, value, icon, trend }: any) {
   );
 }
 
-function ChartCard({ title, subtitle, children, rightControl, footerContent }: any) {
+interface ChartCardProps {
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+  rightControl?: React.ReactNode;
+  footerContent?: React.ReactNode;
+}
+
+function ChartCard({ title, subtitle, children, rightControl, footerContent }: ChartCardProps) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex justify-between items-center mb-4">
@@ -298,7 +349,7 @@ function ChartCard({ title, subtitle, children, rightControl, footerContent }: a
         {rightControl}
       </div>
       {children}
-      <div className="mt-4">{footerContent}</div>
+      {footerContent && <div className="mt-4">{footerContent}</div>}
     </div>
   );
 }

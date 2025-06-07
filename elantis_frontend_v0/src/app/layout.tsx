@@ -2,8 +2,8 @@
 
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import HeaderWithState from "@/components/HeaderWithState";
+import Sidebar from "@/components/menu/MenuSidebar";
+import Header from "@/components/menu/MenuHeader";
 import { useState } from "react";
 import clsx from "clsx";
 
@@ -24,6 +24,17 @@ export default function RootLayout({
 }>) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  // 🔔 Estado para mostrar ou esconder notificações
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const handleNotificationsClick = () => {
+    setShowNotifications((prev) => !prev);
+  };
+
+  const handleCloseNotifications = () => {
+    setShowNotifications(false);
+  };
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
@@ -38,7 +49,13 @@ export default function RootLayout({
             isSidebarOpen ? "ml-5" : "ml-3 mr-3"
           )}>
             <div className="pt-2 pr-2 md-4">
-              <HeaderWithState isSidebarOpen={isSidebarOpen} />
+              <Header 
+                isSidebarOpen={isSidebarOpen}
+                showNotifications={showNotifications}
+                onNotificationsClick={handleNotificationsClick}
+                onCloseNotifications={handleCloseNotifications}
+                unreadCount={2} // valor de exemplo
+              />
               <div className="h-4"></div>
               <div className="mt-6 pl-4">{children}</div>
             </div>
