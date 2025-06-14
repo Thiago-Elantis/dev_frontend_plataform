@@ -1,6 +1,7 @@
 "use client";
 
 import { PageContainer, PageHeader, Card } from "@/components/ui";
+import { ChartHeader } from "@/components/overview/dashboard/subcomponents/DashboardChartHeader";
 import SalesTimeline from "@/components/overview/dashboard/SalesTimeline";
 import StatusChannel from "@/components/overview/dashboard/StatusChannel";
 import { renderMetricCards } from "@/components/overview/dashboard/utils/renderCards";
@@ -41,56 +42,122 @@ export default function Dashboard() {
 
         {/* Timeline de Vendas */}
         <Card className="animate-slide-up">
-          <SalesTimeline />
+          <div className="p-6">
+            <ChartHeader 
+              title="Timeline de Vendas" 
+              subtitle="Acompanhe o progresso das vendas ao longo do tempo" 
+            />
+            <SalesTimeline />
+          </div>
         </Card>
 
         {/* Primeira linha de gráficos */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up">
           <Card>
-            <StatusChannel />
+            <div className="p-6">
+              <ChartHeader 
+                title="Status dos Canais" 
+                subtitle="Distribuição de leads por canal de origem" 
+              />
+              <StatusChannel />
+            </div>
           </Card>
           <Card>
-            <GenericFunnel 
-              title="Funil de Conversão" 
-              subtitle="Comportamento de cada funil" 
-              categories={[...CATEGORIES_SALES_ITEMS]} 
-              initialCategory="Geral" 
-              getData={getSalesData} 
-              baseColor="#6366f1" 
-              opacityRange={0.6}
-            />
+            <div className="p-6">
+              <ChartHeader 
+                title="Funil de Conversão" 
+                subtitle="Comportamento de cada funil de vendas" 
+              />
+              <GenericFunnel 
+                title="" 
+                subtitle="" 
+                categories={[...CATEGORIES_SALES_ITEMS]} 
+                initialCategory="Geral" 
+                getData={getSalesData} 
+                baseColor="#6366f1" 
+                opacityRange={0.6}
+              />
+            </div>
           </Card>
         </div>
 
         {/* Gráfico de Progresso de Vendas */}
         <Card className="animate-slide-up">
-          <SalesProgressChart/>
+          <div className="p-6">
+            <ChartHeader 
+              title="Progresso de Vendas" 
+              subtitle="Acompanhe o desempenho das vendas mensais" 
+            />
+            <SalesProgressChart/>
+          </div>
         </Card>
 
         {/* Motivos de Perda */}
         <Card className="animate-slide-up">
-          <MotivosDePerda />
+          <div className="p-6">
+            <ChartHeader 
+              title="Motivos de Perda" 
+              subtitle="Análise dos principais motivos de perda de negócios" 
+            />
+            <MotivosDePerda />
+          </div>
         </Card>
         
         {/* Grid de componentes menores */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
           <Card>
-            <MapaDeAtividades nivelUsuario={"membro+"} usuarioLogado={""} />
+            <div className="p-6">
+              <ChartHeader 
+                title="Mapa de Atividades" 
+                subtitle="Distribuição de atividades da equipe" 
+              />
+              <MapaDeAtividades nivelUsuario={"membro+"} usuarioLogado={""} />
+            </div>
           </Card>
           <Card>
-            <NegociosPorProduto />
+            <div className="p-6">
+              <ChartHeader 
+                title="Negócios por Produto" 
+                subtitle="Performance de vendas por categoria" 
+              />
+              <NegociosPorProduto />
+            </div>
           </Card>
           <Card>
-            <ResumoTarefasEquipe />
+            <div className="p-6">
+              <ChartHeader 
+                title="Resumo de Tarefas" 
+                subtitle="Status das tarefas da equipe" 
+              />
+              <ResumoTarefasEquipe />
+            </div>
           </Card>
           <Card>
-            <TopSellersRanking />
+            <div className="p-6">
+              <ChartHeader 
+                title="Top Vendedores" 
+                subtitle="Ranking dos melhores vendedores" 
+              />
+              <TopSellersRanking />
+            </div>
           </Card>
           <Card>
-            <ProductEarningsChart/>
+            <div className="p-6">
+              <ChartHeader 
+                title="Receita por Produto" 
+                subtitle="Análise de receita por categoria" 
+              />
+              <ProductEarningsChart/>
+            </div>
           </Card>
           <Card>
-            <ContactMethod />
+            <div className="p-6">
+              <ChartHeader 
+                title="Métodos de Contato" 
+                subtitle="Preferências de comunicação dos clientes" 
+              />
+              <ContactMethod />
+            </div>
           </Card>
         </div>
       </div>

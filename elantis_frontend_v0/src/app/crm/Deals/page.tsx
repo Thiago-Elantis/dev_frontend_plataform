@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
-import { FiPlus } from 'react-icons/fi';
+import { Plus, TrendingUp, DollarSign, Target, Users, Filter, Download, BarChart3 } from 'lucide-react';
+import { PageContainer, PageHeader, Card, Button, MetricCard } from '@/components/ui';
 import PipelineStage from '@/components_crm/components_deals/PipelineStage';
 import AddDealModal from '@/components_crm/components_deals/AddDealModal';
 import type { Deal, DealsByStage, NewDealForm, PipelineStageTP } from '@/types';
@@ -23,12 +24,68 @@ const initialDeals: DealsByStage = {
       name: 'Contrato com Tech Solutions',
       amount: 25000,
       contact: 'Maria Silva',
-      expectedClose: '2023-07-15',
+      expectedClose: '2024-07-15',
       probability: 20,
     },
-    // ... outros deals
+    {
+      id: 'deal-2',
+      name: 'Evento Corporativo - InovaCorp',
+      amount: 15000,
+      contact: 'João Santos',
+      expectedClose: '2024-07-20',
+      probability: 25,
+    },
   ],
-  // ... outros estágios
+  'stage-2': [
+    {
+      id: 'deal-3',
+      name: 'Festival de Música - EventPlus',
+      amount: 50000,
+      contact: 'Ana Costa',
+      expectedClose: '2024-08-01',
+      probability: 40,
+    },
+  ],
+  'stage-3': [
+    {
+      id: 'deal-4',
+      name: 'Conferência Tech 2024',
+      amount: 35000,
+      contact: 'Carlos Lima',
+      expectedClose: '2024-07-25',
+      probability: 60,
+    },
+  ],
+  'stage-4': [
+    {
+      id: 'deal-5',
+      name: 'Workshop de Inovação',
+      amount: 12000,
+      contact: 'Fernanda Oliveira',
+      expectedClose: '2024-07-18',
+      probability: 80,
+    },
+  ],
+  'stage-5': [
+    {
+      id: 'deal-6',
+      name: 'Seminário Empresarial',
+      amount: 18000,
+      contact: 'Roberto Silva',
+      expectedClose: '2024-06-30',
+      probability: 100,
+    },
+  ],
+  'stage-6': [
+    {
+      id: 'deal-7',
+      name: 'Evento de Lançamento',
+      amount: 8000,
+      contact: 'Lucia Mendes',
+      expectedClose: '2024-06-15',
+      probability: 0,
+    },
+  ],
 };
 
 export default function DealsPipelinePage() {
@@ -103,33 +160,139 @@ export default function DealsPipelinePage() {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   };
 
+  // Calcular métricas
+  const allDeals = Object.values(deals).flat();
+  const totalValue = allDeals.reduce((sum, deal) => sum + deal.amount, 0);
+  const wonDeals = deals['stage-5'] || [];
+  const lostDeals = deals['stage-6'] || [];
+  const activeDeals = allDeals.filter(deal => !['stage-5', 'stage-6'].includes(
+    Object.keys(deals).find(key => deals[key].includes(deal)) || ''
+  ));
+  
+  const winRate = allDeals.length > 0 ? (wonDeals.length / allDeals.length) * 100 : 0;
+  const avgDealValue = allDeals.length > 0 ? totalValue / allDeals.length : 0;
+
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'CRM', href: '/crm' },
+    { label: 'Negócios' }
+  ];
+
+  const handleExport = () => {
+    console.log('Exportando pipeline...');
+  };
+
+  const actions = (
+    <>
+      <Button
+        variant="outline"
+        icon={Filter}
+        onClick={() => {/* Implementar filtros */}}
+      >
+        Filtros
+      </Button>
+      <Button
+        variant="outline"
+        icon={Download}
+        onClick={handleExport}
+      >
+        Exportar
+      </Button>
+      <Button
+        icon={Plus}
+        onClick={() => setShowAddDealModal(true)}
+      >
+        Novo Negócio
+      </Button>
+    </>
+  );
+
   return (
-    <div className="flex h-screen bg-gray-50">
-      <div className="flex-1 overflow-auto p-6">
-        <div className="flex justify-end items-center mb-6">
-          <button
-            onClick={() => setShowAddDealModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
-          >
-            <FiPlus className="mr-2" />
-            Novo Deak
-          </button>
+    <PageContainer>
+      <PageHeader
+        title="Pipeline de Negócios"
+        subtitle="Gerencie e acompanhe todos os seus negócios em andamento"
+        breadcrumbs={breadcrumbs}
+        actions={actions}
+      />
+      
+      <div className="p-6 space-y-6">
+        {/* Métricas do Pipeline */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <MetricCard
+            title="Valor Total do Pipeline"
+            value={formatCurrency(totalValue)}
+            change={{ value: "15.3%", type: "increase" }}
+            icon={DollarSign}
+            iconColor="text-green-600"
+            subtitle="último mês"
+          />
+          <MetricCard
+            title="Negócios Ativos"
+            value={activeDeals.length.toString()}
+            change={{ value: "8", type: "increase" }}
+            icon={Target}
+            iconColor="text-blue-600"
+            subtitle="último mês"
+          />
+          <MetricCard
+            title="Taxa de Conversão"
+            value={`${winRate.toFixed(1)}%`}
+            change={{ value: "2.1%", type: "increase" }}
+            icon={TrendingUp}
+            iconColor="text-purple-600"
+            subtitle="último mês"
+          />
+          <MetricCard
+            title="Ticket Médio"
+            value={formatCurrency(avgDealValue)}
+            change={{ value: "5.8%", type: "increase" }}
+            icon={BarChart3}
+            iconColor="text-orange-600"
+            subtitle="último mês"
+          />
         </div>
 
-      
-
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="flex overflow-x-auto pb-4 gap-4">
-            {pipelineStages.map(stage => (
-              <PipelineStage
-                key={stage.id}
-                stage={stage}
-                deals={deals[stage.id] || []}
-                formatCurrency={formatCurrency}
-              />
-            ))}
+        {/* Resumo por Estágio */}
+        <Card>
+          <div className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Resumo por Estágio</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {pipelineStages.map(stage => {
+                const stageDeals = deals[stage.id] || [];
+                const stageValue = stageDeals.reduce((sum, deal) => sum + deal.amount, 0);
+                return (
+                  <div key={stage.id} className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium mb-2 ${stage.color}`}>
+                      {stage.title}
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900">{stageDeals.length}</div>
+                    <div className="text-sm text-gray-600">{formatCurrency(stageValue)}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </DragDropContext>
+        </Card>
+
+        {/* Pipeline Kanban */}
+        <Card>
+          <div className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Pipeline de Vendas</h3>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <div className="flex overflow-x-auto pb-4 gap-4 min-h-[600px]">
+                {pipelineStages.map(stage => (
+                  <PipelineStage
+                    key={stage.id}
+                    stage={stage}
+                    deals={deals[stage.id] || []}
+                    formatCurrency={formatCurrency}
+                  />
+                ))}
+              </div>
+            </DragDropContext>
+          </div>
+        </Card>
 
         <AddDealModal
           show={showAddDealModal}
@@ -140,6 +303,6 @@ export default function DealsPipelinePage() {
           pipelineStages={pipelineStages}
         />
       </div>
-    </div>
+    </PageContainer>
   );
 }
