@@ -9,6 +9,8 @@ import { startOfWeek } from 'date-fns/startOfWeek';
 import { getDay } from 'date-fns/getDay';
 import { ptBR } from 'date-fns/locale/pt-BR';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Plus, Calendar as CalendarIcon, Filter, Download } from 'lucide-react';
+import { PageContainer, PageHeader, Card, Button } from '@/components/ui';
 import EventModal from '@/components_event/components_calendar/EventModal';
 import CalendarHeader from '@/components_event/components_calendar/CalendarHeader';
 import { ActivityTypes, CalendarEvent } from '@/types/calendar';
@@ -170,39 +172,131 @@ export default function EventCalendarPage() {
     setShowModal(true);
   };
 
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Eventos', href: '/events' },
+    { label: 'Calendário' }
+  ];
+
+  const actions = (
+    <>
+      <Button
+        variant="outline"
+        icon={Filter}
+        onClick={() => {/* Implementar filtros */}}
+      >
+        Filtros
+      </Button>
+      <Button
+        variant="outline"
+        icon={Download}
+        onClick={() => {/* Implementar exportação */}}
+      >
+        Exportar
+      </Button>
+      <Button
+        icon={Plus}
+        onClick={handleNewEventClick}
+      >
+        Nova Atividade
+      </Button>
+    </>
+  );
+
   return (
-    <div className="flex h-screen bg-gray-50">
-
-      <div className="flex-1 overflow-auto p-6">
-        <CalendarHeader title="Calendário de Atividades" onNewEvent={handleNewEventClick} />
-
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 h-[calc(100vh-180px)]">
-          <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: '100%' }}
-            onSelectSlot={handleSelectSlot}
-            onSelectEvent={handleSelectEvent}
-            selectable
-            defaultView={Views.MONTH}
-            views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
-            messages={{
-              today: 'Hoje',
-              previous: 'Anterior',
-              next: 'Próximo',
-              month: 'Mês',
-              week: 'Semana',
-              day: 'Dia',
-              agenda: 'Agenda',
-              date: 'Data',
-              time: 'Hora',
-              event: 'Atividade',
-            }}
-            eventPropGetter={eventStyleGetter}
-          />
+    <PageContainer>
+      <PageHeader
+        title="Calendário de Atividades"
+        subtitle="Gerencie e visualize todas as atividades dos seus eventos"
+        breadcrumbs={breadcrumbs}
+        actions={actions}
+      />
+      
+      <div className="p-6 space-y-6">
+        {/* Estatísticas rápidas */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{events.length}</div>
+              <div className="text-sm text-gray-600">Total de Atividades</div>
+            </div>
+          </Card>
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {events.filter(e => e.type === 'MONTAGEM_ESTANDE').length}
+              </div>
+              <div className="text-sm text-gray-600">Montagem de Estandes</div>
+            </div>
+          </Card>
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {events.filter(e => e.type === 'MONTAGEM_PALCO').length}
+              </div>
+              <div className="text-sm text-gray-600">Montagem de Palcos</div>
+            </div>
+          </Card>
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">
+                {events.filter(e => e.type === 'TESTE_SOM').length}
+              </div>
+              <div className="text-sm text-gray-600">Testes de Som</div>
+            </div>
+          </Card>
         </div>
+
+        {/* Legenda de tipos de atividade */}
+        <Card>
+          <div className="p-4">
+            <h3 className="text-sm font-medium text-gray-900 mb-3">Tipos de Atividade</h3>
+            <div className="flex flex-wrap gap-4">
+              {Object.entries(ACTIVITY_TYPES).map(([key, type]) => (
+                <div key={key} className="flex items-center space-x-2">
+                  <div 
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: type.color }}
+                  />
+                  <span className="text-sm text-gray-600">{type.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* Calendário */}
+        <Card>
+          <div className="p-4">
+            <div className="h-[600px]">
+              <Calendar
+                localizer={localizer}
+                events={events}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: '100%' }}
+                onSelectSlot={handleSelectSlot}
+                onSelectEvent={handleSelectEvent}
+                selectable
+                defaultView={Views.MONTH}
+                views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
+                messages={{
+                  today: 'Hoje',
+                  previous: 'Anterior',
+                  next: 'Próximo',
+                  month: 'Mês',
+                  week: 'Semana',
+                  day: 'Dia',
+                  agenda: 'Agenda',
+                  date: 'Data',
+                  time: 'Hora',
+                  event: 'Atividade',
+                }}
+                eventPropGetter={eventStyleGetter}
+              />
+            </div>
+          </div>
+        </Card>
 
         <EventModal
           showModal={showModal}
@@ -217,6 +311,6 @@ export default function EventCalendarPage() {
           format={format}
         />
       </div>
-    </div>
+    </PageContainer>
   );
 }

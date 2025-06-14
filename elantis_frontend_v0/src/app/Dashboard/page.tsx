@@ -1,5 +1,6 @@
 "use client";
 
+import { PageContainer, PageHeader, Card } from "@/components/ui";
 import SalesTimeline from "@/components/overview/dashboard/SalesTimeline";
 import StatusChannel from "@/components/overview/dashboard/StatusChannel";
 import { renderMetricCards } from "@/components/overview/dashboard/utils/renderCards";
@@ -15,27 +16,40 @@ import ResumoTarefasEquipe from "@/components/overview/dashboard/ResumoTarefasEq
 import TopSellersRanking from "@/components/overview/dashboard/TopSellersRanking";
 import SalesProgressChart from "@/components/overview/dashboard/SalesProgressChart";
 import ProductEarningsChart from "@/components/overview/dashboard/ProductEarningsChart";
+import { BarChart3, TrendingUp, Users, Calendar } from "lucide-react";
 
 export default function Dashboard() {
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Dashboard' }
+  ];
+
   return (
-    <div className="flex h-screen bg-gray-50">
-      <main className="flex-1 flex flex-col overflow-y-auto">
-        <div className="p-6 space-y-6 flex-grow">
+    <PageContainer>
+      <PageHeader
+        title="Dashboard"
+        subtitle="Visão geral dos seus eventos e negócios"
+        breadcrumbs={breadcrumbs}
+      />
+      
+      <div className="p-6 space-y-6">
+        {/* Cartões de Métricas */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
+          {renderMetricCards(OverviewMetrics)}
+          {renderMetricCards(SalesMetrics)}
+        </div>
 
-          {/* Cartões de Métricas */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {renderMetricCards(OverviewMetrics)}
-            {renderMetricCards(SalesMetrics)}
-          </div>
+        {/* Timeline de Vendas */}
+        <Card className="animate-slide-up">
+          <SalesTimeline />
+        </Card>
 
-          {/* Timeline de Vendas */}
-          <div>
-            <SalesTimeline />
-          </div>
-
-          {/* Primeira linha de gráficos */}
-          <div className="grid grid-cols-2 gap-6">
+        {/* Primeira linha de gráficos */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up">
+          <Card>
             <StatusChannel />
+          </Card>
+          <Card>
             <GenericFunnel 
               title="Funil de Conversão" 
               subtitle="Comportamento de cada funil" 
@@ -45,31 +59,41 @@ export default function Dashboard() {
               baseColor="#6366f1" 
               opacityRange={0.6}
             />
-          </div>
-
-          {/* Segunda linha de gráficos */}
-          <div className="grid grid-cols-2 lg:grid-cols-2 gap-6">
-            
-          </div>
-
-          <div className="grid grid-cols-1">
-            <SalesProgressChart/>
-          </div>
-          <div className="grid grid-cols-1">
-            <MotivosDePerda />
-          </div>
-          
-          <div className="grid grid-cols-2 lg:grid-cols-2 gap-6">
-
-            <MapaDeAtividades nivelUsuario={"membro+"} usuarioLogado={""} />
-            <NegociosPorProduto />
-            <ResumoTarefasEquipe />
-            <TopSellersRanking />
-            <ProductEarningsChart/>
-            <ContactMethod />
-          </div>
+          </Card>
         </div>
-      </main>
-    </div>
+
+        {/* Gráfico de Progresso de Vendas */}
+        <Card className="animate-slide-up">
+          <SalesProgressChart/>
+        </Card>
+
+        {/* Motivos de Perda */}
+        <Card className="animate-slide-up">
+          <MotivosDePerda />
+        </Card>
+        
+        {/* Grid de componentes menores */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
+          <Card>
+            <MapaDeAtividades nivelUsuario={"membro+"} usuarioLogado={""} />
+          </Card>
+          <Card>
+            <NegociosPorProduto />
+          </Card>
+          <Card>
+            <ResumoTarefasEquipe />
+          </Card>
+          <Card>
+            <TopSellersRanking />
+          </Card>
+          <Card>
+            <ProductEarningsChart/>
+          </Card>
+          <Card>
+            <ContactMethod />
+          </Card>
+        </div>
+      </div>
+    </PageContainer>
   );
 }

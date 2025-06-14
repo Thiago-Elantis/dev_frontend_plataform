@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { MapPin, Calendar, Save, Download, Undo, Redo } from 'lucide-react';
+import { PageContainer, PageHeader, Card, Button } from '@/components/ui';
 import { CanvasElement } from '@/types/map-event';
 import EventMapToolbar from '@/components_map/EventMapToolbar';
 import EventCalendar from '@/components_map/EventCalendar';
@@ -97,46 +99,121 @@ export default function EventMapPage() {
     return null;
   };
 
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Eventos', href: '/events' },
+    { label: 'Mapa do Evento' }
+  ];
+
+  const handleSave = () => {
+    console.log('Salvando mapa...');
+  };
+
+  const handleExport = () => {
+    console.log('Exportando mapa...');
+  };
+
+  const actions = (
+    <>
+      <EventCalendar 
+        showCalendar={modals.showCalendar} 
+        setShowCalendar={val => setModals(prev => ({ ...prev, showCalendar: val }))}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
+      <Button
+        variant="outline"
+        icon={Download}
+        onClick={handleExport}
+      >
+        Exportar
+      </Button>
+      <Button
+        icon={Save}
+        onClick={handleSave}
+      >
+        Salvar
+      </Button>
+    </>
+  );
+
   return (
-    <div className="flex h-screen bg-gray-50">
-      <div className="flex-1 overflow-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Mapa do Evento</h1>
-          <EventCalendar 
-            showCalendar={modals.showCalendar} 
-            setShowCalendar={val => setModals(prev => ({ ...prev, showCalendar: val }))}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-          />
+    <PageContainer>
+      <PageHeader
+        title="Mapa do Evento"
+        subtitle="Crie e gerencie o layout do seu evento"
+        breadcrumbs={breadcrumbs}
+        actions={actions}
+      />
+      
+      <div className="p-6 space-y-6">
+        {/* Estatísticas do mapa */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{canvasElements.length}</div>
+              <div className="text-sm text-gray-600">Total de Elementos</div>
+            </div>
+          </Card>
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {canvasElements.filter(e => e.type === 'booth').length}
+              </div>
+              <div className="text-sm text-gray-600">Estandes</div>
+            </div>
+          </Card>
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {canvasElements.filter(e => e.type === 'lecture').length}
+              </div>
+              <div className="text-sm text-gray-600">Áreas de Palestra</div>
+            </div>
+          </Card>
+          <Card padding="sm">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">
+                {canvasElements.filter(e => e.type === 'text').length}
+              </div>
+              <div className="text-sm text-gray-600">Textos</div>
+            </div>
+          </Card>
         </div>
 
-        <EventMapToolbar
-          mode={drawingMode}
-          setMode={setDrawingMode}
-          selectedElement={selectedElement}
-          elements={canvasElements}
-          setElements={updateElementsWithHistory}
-          setSelectedElement={setSelectedElement}
-          handleUndo={handleUndo}
-          handleRedo={handleRedo}
-          canUndo={history.length > 0}
-          canRedo={redoStack.length > 0}
-        />
+        {/* Toolbar */}
+        <Card>
+          <EventMapToolbar
+            mode={drawingMode}
+            setMode={setDrawingMode}
+            selectedElement={selectedElement}
+            elements={canvasElements}
+            setElements={updateElementsWithHistory}
+            setSelectedElement={setSelectedElement}
+            handleUndo={handleUndo}
+            handleRedo={handleRedo}
+            canUndo={history.length > 0}
+            canRedo={redoStack.length > 0}
+          />
+        </Card>
 
-        <EventCanvas
-          canvasRef={canvasRef}
-          elements={canvasElements}
-          setElements={updateElementsWithHistory}
-          selectedElement={selectedElement}
-          setSelectedElement={setSelectedElement}
-          mode={drawingMode}
-          drawingLine={currentLine}
-          setDrawingLine={setCurrentLine}
-          setShowLectureModal={(val: any) => setModals(prev => ({ ...prev, showLectureModal: val }))}
-        />
+        {/* Canvas */}
+        <Card padding="none">
+          <EventCanvas
+            canvasRef={canvasRef}
+            elements={canvasElements}
+            setElements={updateElementsWithHistory}
+            selectedElement={selectedElement}
+            setSelectedElement={setSelectedElement}
+            mode={drawingMode}
+            drawingLine={currentLine}
+            setDrawingLine={setCurrentLine}
+            setShowLectureModal={(val: any) => setModals(prev => ({ ...prev, showLectureModal: val }))}
+          />
+        </Card>
 
         {renderModals()}
       </div>
-    </div>
+    </PageContainer>
   );
 }
